@@ -12,8 +12,12 @@ import java.util.Scanner;
 
 public class App {
 
+    public static void main(String[] args){
+        System.out.println(generateRandomQuote(convertToQuoteClass(readFile("src/main/resources/recentquotes.json"))));
+    }
+
     //function to read a file from a file path and parse that files content into a string
-    public String readFile(String path){
+    public static String readFile(String path){
         try {
             Scanner sc = new Scanner(new File(path));
             StringBuilder jsonString = new StringBuilder();
