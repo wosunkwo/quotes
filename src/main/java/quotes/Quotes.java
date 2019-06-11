@@ -1,21 +1,19 @@
 package quotes;
 
 public class Quotes {
-    String[] tags;
-    String author;
-    String likes;
     String text;
+    String starWarsQuote;
 
-    Quotes(String[] tags, String author, String likes, String text){
-        this.tags = tags;
-        this.author = author;
-        this.likes = likes;
+   public Quotes(String starWarsQuote, String text){
+        this.starWarsQuote = starWarsQuote;
         this.text = text;
     }
 
-    @Override
     public String toString(){
-        return String.format("%s\n%s\n", author, text);
+       if(starWarsQuote != null){
+           return String.format("%s\n", starWarsQuote);
+       }else{
+           return String.format("%s\n", text);
+       }
     }
-
 }

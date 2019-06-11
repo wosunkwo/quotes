@@ -5,6 +5,7 @@ package quotes;
 
 import org.junit.Test;
 
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 
 import static org.junit.Assert.*;
@@ -32,8 +33,8 @@ public class AppTest {
     public void testConvertToQuoteClass() {
         App classUnderTest = new App();
         String path = "src/main/resources/recentquotes.json";
-        String jsonString = classUnderTest.readFile(path);
-        assertNotNull("this method call should return a string", classUnderTest.convertToQuoteClass(jsonString));
+        BufferedReader jsonReader = classUnderTest.readFile(path);
+        assertNotNull("this method call should return a random string", classUnderTest.convertToQuoteClassFromFile(jsonReader));
     }
 
     //test to check for when my application is able to successfully generate a random quote
@@ -41,8 +42,8 @@ public class AppTest {
     public void testGenerateRandomQuote() {
         App classUnderTest = new App();
         String path = "src/main/resources/recentquotes.json";
-        String jsonString = classUnderTest.readFile(path);
-        Quotes[] quoteArr = classUnderTest.convertToQuoteClass(jsonString);
+        BufferedReader jsonReader = classUnderTest.readFile(path);
+        Quotes[] quoteArr = classUnderTest.convertToQuoteClassFromFile(jsonReader);
         assertNotNull("this method call should return a string", classUnderTest.generateRandomQuote(quoteArr));
     }
 

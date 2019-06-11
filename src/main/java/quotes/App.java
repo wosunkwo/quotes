@@ -4,40 +4,93 @@
 package quotes;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.Random;
-import java.util.Scanner;
 
 public class App {
+    static String filePath = "src/main/resources/recentquotes.json";
 
     public static void main(String[] args){
-        System.out.println(generateRandomQuote(convertToQuoteClass(readFile("src/main/resources/recentquotes.json"))));
+       System.out.println(convertToQuoteClassFromApi(getQuoteFromApi("http://swquotesapi.digitaljedi.dk/api/SWQuote/RandomStarWarsQuote")));
     }
 
-    //function to read a file from a file path and parse that files content into a string
-    public static String readFile(String path){
+    //method to get a random quote from the star wars api
+    public static BufferedReader getQuoteFromApi(String urlString){
         try {
-            Scanner sc = new Scanner(new File(path));
-            StringBuilder jsonString = new StringBuilder();
-            while(sc.hasNextLine()){
-                jsonString.append(sc.nextLine());
-            }
-            return jsonString.toString();
-        } catch (FileNotFoundException e){
-            System.out.println(("File not found"));
-            System.out.println(e);
-            return "";
+            URL url = new URL(urlString);
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            BufferedReader reader = new BufferedReader(new InputStreamReader((con.getInputStream())));
+            return reader;
+        }catch(IOException e){
+            System.out.println(generateRandomQuote(convertToQuoteClassFromFile(readFile(filePath))));
+            return null;
         }
     }
-//function to convert a json string into an array of quote instances
-    public static Quotes[] convertToQuoteClass(String jsonString){
+
+    //method to convert an api quote to the quote class using gson
+    public static Quotes convertToQuoteClassFromApi(BufferedReader jsonReader){
+        if(jsonReader != null){
+            Gson gson = new Gson();
+            Quotes quote = gson.fromJson(jsonReader, Quotes.class);
+            cacheQuoteIntoFile(gson.toJson(quote));
+            return quote;
+        }else{
+            return null;
+        }
+    }
+
+    //method to cache the random quotes i get back from the api into my json file
+    public static void cacheQuoteIntoFile(String quote){
+        try {
+            Gson gson = new Gson();
+            JsonArray jsonFileArray = gson.fromJson(readFile(filePath), JsonArray.class);
+            System.out.println(jsonFileArray);
+//            jsonFileArray.add(quote);
+////            FileWriter writer = new FileWriter(filePath);
+//            gson.toJson(jsonFileArray, writer);
+
+//            File quoteFile = new File(filePath);
+//            FileWriter quoteWriter;
+//            quoteWriter = new FileWriter(quoteFile.getAbsoluteFile(), true);
+//
+//            // Writes text to a character-output stream
+//            BufferedWriter bufferWriter = new BufferedWriter(quoteWriter);
+//            bufferWriter.write(quote.toString());
+//            bufferWriter.close();
+
+//            System.out.println("Company data saved at file location: " + filePath + " Data: " + quote + "\n");
+
+        } catch (Exception e) {
+            System.out.println("Hmm.. Got an error while saving Company data to file " + e.toString());
+        }
+    }
+
+//function to read a file from a file path using a buffered reader
+    public static BufferedReader readFile(String path){
+        try {
+        BufferedReader reader = new BufferedReader(new FileReader(path));
+        return reader;
+    } catch (FileNotFoundException e){
+        System.out.println(("File not found"));
+        System.out.println(e);
+        return null;
+    }
+}
+
+    //function to convert a buffered reader into an array of quote instances
+    public static Quotes[] convertToQuoteClassFromFile(BufferedReader jsonReader){
         Gson gson = new Gson();
-        Quotes[] quotesArr = gson.fromJson(jsonString, Quotes[].class );
+        Quotes[] quotesArr = gson.fromJson(jsonReader, Quotes[].class);
+//        Quotes[] quotesArr = gson.fromJson(jsonReader, Quotes[].class);
         return quotesArr;
     }
-//function to generate a random quote from the list of quote instances in the array
+
+    //function to generate a random quote from the list of quote instances in the array
     public static Quotes generateRandomQuote(Quotes[] quote){
         Random rand = new Random();
         int randomNum = rand.nextInt(quote.length);
