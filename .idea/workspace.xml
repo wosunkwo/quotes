@@ -81,6 +81,11 @@
       </list>
     </option>
   </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>We live on a hunk of rock and metal that circles a humdrum star</find>
+    </findStrings>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -203,7 +208,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.App">
+  <component name="RunManager" selected="JUnit.AppTest">
     <configuration name="App" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="quotes.App" />
       <module name="quotes.main" />
@@ -282,10 +287,10 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.AppTest" />
         <item itemvalue="Application.App" />
         <item itemvalue="JUnit.AppTest.testGenerateRandomQuote" />
         <item itemvalue="JUnit.AppTest.testConvertToQuoteClass" />
-        <item itemvalue="JUnit.AppTest" />
         <item itemvalue="JUnit.AppTest.testReadFileFail" />
       </list>
     </recent_temporary>
