@@ -5,11 +5,11 @@ package quotes;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.google.gson.stream.JsonWriter;
 
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Random;
 
 public class App {
@@ -37,7 +37,7 @@ public class App {
         if(jsonReader != null){
             Gson gson = new Gson();
             Quotes quote = gson.fromJson(jsonReader, Quotes.class);
-            cacheQuoteIntoFile(gson.toJson(quote));
+//            cacheQuoteIntoFile(gson.toJson(quote));
             return quote;
         }else{
             return null;
@@ -45,14 +45,14 @@ public class App {
     }
 
     //method to cache the random quotes i get back from the api into my json file
-    public static void cacheQuoteIntoFile(String quote){
+   /* public static void cacheQuoteIntoFile(String quote){
         try {
             Gson gson = new Gson();
             JsonArray jsonFileArray = gson.fromJson(readFile(filePath), JsonArray.class);
-            System.out.println(jsonFileArray);
-//            jsonFileArray.add(quote);
-////            FileWriter writer = new FileWriter(filePath);
-//            gson.toJson(jsonFileArray, writer);
+            jsonFileArray.add(quote);
+//            System.out.println(jsonFileArray);
+            FileWriter writer = new FileWriter("src/main/resources/temp.json");
+            writer.write(gson.toJson(jsonFileArray));
 
 //            File quoteFile = new File(filePath);
 //            FileWriter quoteWriter;
@@ -68,7 +68,7 @@ public class App {
         } catch (Exception e) {
             System.out.println("Hmm.. Got an error while saving Company data to file " + e.toString());
         }
-    }
+    } */
 
 //function to read a file from a file path using a buffered reader
     public static BufferedReader readFile(String path){
