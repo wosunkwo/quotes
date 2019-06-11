@@ -24,8 +24,7 @@ public class AppTest {
     public void testReadFileFail() {
         App classUnderTest = new App();
         String path = "someRandomPath";
-        String expectedOutput = "";
-        assertEquals("This should return an empty string if it fails",expectedOutput, classUnderTest.readFile(path));
+        assertNull("This should return null if it fails", classUnderTest.readFile(path));
     }
 
     //test case to check for when my application is able to convert a json string into an array of quotes
