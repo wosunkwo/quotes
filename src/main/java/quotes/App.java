@@ -5,7 +5,7 @@ package quotes;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
-import com.google.gson.stream.JsonWriter;
+import com.google.gson.JsonObject;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -37,7 +37,7 @@ public class App {
         if(jsonReader != null){
             Gson gson = new Gson();
             Quotes quote = gson.fromJson(jsonReader, Quotes.class);
-//            cacheQuoteIntoFile(gson.toJson(quote));
+            cacheQuoteIntoFile(quote);
             return quote;
         }else{
             return null;
@@ -45,37 +45,28 @@ public class App {
     }
 
     //method to cache the random quotes i get back from the api into my json file
-   /* public static void cacheQuoteIntoFile(String quote){
+    public static void cacheQuoteIntoFile(Quotes quote){
         try {
             Gson gson = new Gson();
             JsonArray jsonFileArray = gson.fromJson(readFile(filePath), JsonArray.class);
-            jsonFileArray.add(quote);
-//            System.out.println(jsonFileArray);
-            FileWriter writer = new FileWriter("src/main/resources/temp.json");
-            writer.write(gson.toJson(jsonFileArray));
-
-//            File quoteFile = new File(filePath);
-//            FileWriter quoteWriter;
-//            quoteWriter = new FileWriter(quoteFile.getAbsoluteFile(), true);
-//
-//            // Writes text to a character-output stream
-//            BufferedWriter bufferWriter = new BufferedWriter(quoteWriter);
-//            bufferWriter.write(quote.toString());
-//            bufferWriter.close();
-
-//            System.out.println("Company data saved at file location: " + filePath + " Data: " + quote + "\n");
+            JsonObject quoteObject = new JsonObject();
+            quoteObject.addProperty("text", quote.getStarWarsQuote());
+            jsonFileArray.add(quoteObject);
+            FileWriter writer = new FileWriter(filePath);
+            gson.toJson(jsonFileArray, writer);
+            writer.close();
 
         } catch (Exception e) {
             System.out.println("Hmm.. Got an error while saving Company data to file " + e.toString());
         }
-    } */
+    }
 
 //function to read a file from a file path using a buffered reader
     public static BufferedReader readFile(String path){
         try {
         BufferedReader reader = new BufferedReader(new FileReader(path));
         return reader;
-    } catch (FileNotFoundException e){
+    } catch (Exception e){
         System.out.println(("File not found"));
         System.out.println(e);
         return null;
@@ -86,7 +77,6 @@ public class App {
     public static Quotes[] convertToQuoteClassFromFile(BufferedReader jsonReader){
         Gson gson = new Gson();
         Quotes[] quotesArr = gson.fromJson(jsonReader, Quotes[].class);
-//        Quotes[] quotesArr = gson.fromJson(jsonReader, Quotes[].class);
         return quotesArr;
     }
 
