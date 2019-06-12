@@ -16,4 +16,8 @@ public class Quotes {
            return String.format("%s\n", text);
        }
     }
+
+    public String getStarWarsQuote() {
+        return starWarsQuote;
+    }
 }
